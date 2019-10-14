@@ -1,0 +1,163 @@
+.homepage {
+    // margin: 0 10%;
+    top: 0;
+    left: 0;
+    background: url(../../assets/bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    main {
+       margin-left: 11rem; 
+    }
+    &__main {
+        margin-top: 5rem;
+        display: flex;
+        
+        & button {
+            width: 5rem;
+            cursor: pointer;
+            box-shadow: none;
+            font-size: 1rem;
+            padding: 3px;
+            font-weight: bold;
+            background: #CDFDCB;
+            color: #209936;
+            border: none;
+            // border-radius: 0.5rem;
+            box-shadow: 0px 4px 10px rgba(7, 36, 18, 0.25);
+            border-radius: 50px;
+            &:disabled {
+                opacity: 0.2;
+            }
+            &:focus {
+                outline: none;
+            }
+            &:active {
+                position:relative;
+                top:1px;
+                box-shadow: none;
+            }
+        }
+        
+        &-search {
+            font-size: 1.2rem;
+            color: white;
+            border-bottom: 1px solid white;
+            width: 20rem;
+            input {
+                width: 17rem;
+                border: none;
+                margin-left: 10px;
+                background: transparent;
+                &::placeholder {
+                    color: white;
+                    font-size: 1.2rem;
+                }
+                &:focus, &:active {
+                    box-shadow: none;
+                    outline: none;
+                    border: none;
+                    color: white;
+                }
+            }
+        }
+        
+    }
+    &__header {
+        margin-top: 8rem;
+        &-header {
+            font-size: 4rem;
+            line-height: 1rem;
+            color: white;
+            font-weight: bolder;
+        }
+        &-body {
+            color: white;
+            line-height: 1rem;
+            font-size: 1.5rem;
+        }
+    }
+    &__button {
+        button {
+            width: 13rem;
+            height: 4rem;
+            font-size: 1.5rem;
+            border-radius: 5rem;
+            border: 1px solid white;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(7, 36, 18, 0.25);
+            border-radius: 50px;
+            &:disabled {
+                opacity: 0.2;
+            }
+            &:focus {
+                outline: none;
+            }
+            &:active {
+                position:relative;
+                top:1px;
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+
+@media (min-width: 768px) {
+    .visible_class {
+        display: none;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .homepage {
+        & main {
+            margin-left: 1rem;
+        }
+        &__header {
+            margin-top: 2rem;
+            &-header {
+             font-size: 2rem;
+             line-height: 5px;
+            }
+            &-body {
+                line-height: normal;
+                display: inline;
+                flex-direction: row;
+            }
+            
+        }
+        &__main {
+            margin-left: 0.5rem;
+            & button { 
+                width: 4rem;
+                margin-left: 0.2rem;
+            }
+            &-search {
+                font-size: 0.3rem;
+                color: white;
+                margin-left: -4px;
+                border-bottom: 1px solid white;
+                width: 12rem;
+                input { 
+                    // box-shadow: none;
+                    margin-left: 0px;
+                    width: 10rem;
+                    &::placeholder {
+                        font-size: 0.9rem;
+                    } 
+                    &:focus, &:active {
+                        box-shadow: none;
+                        outline: none;
+                        border: none;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

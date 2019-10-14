@@ -1,0 +1,188 @@
+
+$activeColor: #27ae60; //green
+$darkenColor: darken($activeColor, 20%);
+
+.authHeader {
+    background: #209936;
+    height: 10rem;
+    padding: 2rem 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    &__heading {
+        top: 6rem;
+        margin: 0 10rem;
+        position: absolute;
+        color: white;
+        &-topic {
+            font-size: 2rem;
+            font-weight: bolder;
+            line-height: 0;
+        }
+        &-sub {
+            font-size: 1.5rem;
+            font-weight: 100;
+        }
+    }
+    &__navigation {
+        display: flex;
+        height: 100%;
+        margin: 0 10rem;
+        padding: 0;
+        .spacer {
+            flex: 1
+        }
+    }
+    &__logo {
+        & a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+    }
+}
+
+.main__auth {
+    width: 93%;
+    margin: 0 auto;
+    &-text {
+        color: #209936;
+    }
+    &-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        &-card {
+            width: 20rem;
+            padding: 5rem 4rem;
+            background: #F8F8F8;
+            border: 2px solid #F2F2F2;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            .roundedOne {
+                width: 28px;
+                height: 28px;
+                position: relative;
+                margin: 20px auto;
+                background: #fcfff4;
+                background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+                border-radius: 50px;
+                box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+                & label {
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    position: absolute;
+                    left: 4px;
+                    top: 4px;
+                    background: linear-gradient(to bottom, #f3efef 0%, #caccce 100%);
+                    border-radius: 50px;
+                    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px white;
+                    &:after {
+                        content: '';
+                        width: 16px;
+                        height: 16px;
+                        position: absolute;
+                        top: 2px;
+                        left: 2px;
+                        background: #27ae60;
+                        background: linear-gradient(to bottom, #209936 0%, #20af5b 100%);
+                        opacity: 0;
+                        border-radius: 50px;
+                        box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+                    }
+                    &:hover::after {
+                        opacity: 0.3;
+                    }
+                }
+                
+                
+                & input[type=checkbox] {
+                    visibility: hidden;
+                    &:checked + label:after {
+                        opacity: 1;
+                    }
+                }
+                
+            } 
+            .head {
+                font-size: 1.2rem;
+                color: #209936
+            }
+            .body {
+                color: #757575;
+            }
+        }
+
+    }
+    &-buttons {
+        margin: 4rem 0;
+        button {
+            width: 109px;
+            height: 49px;
+            border: none;
+            box-shadow: 0px 4px 10px rgba(7, 36, 18, 0.25);
+            border-radius: 50px;
+            &:disabled {
+                opacity: 0.2;
+            }
+            &:focus {
+                outline: none;
+            }
+            &:active {
+                position:relative;
+                top:1px;
+                box-shadow: none;
+            }
+        }
+        &_back {
+            color: rgba(128, 123, 123, 0.753);
+            margin-right: 10px;
+            &:hover {
+                background-color:#777a75;
+                color: #b3bead;
+            }
+        }
+        &_next {
+            background: #209936;
+            color: #fff;
+        }
+    }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .authHeader {
+        height: 6rem;
+        &__logo {
+            & a {
+                font-size: 1rem;
+            }
+        }
+        &__heading {
+            padding: 0;
+            top: 4rem;
+            margin: 0 3rem;
+            &-topic {
+                font-size: 1.5rem;
+            }
+            &-sub {
+                font-size: 0.8rem
+            }
+        }
+        &__navigation {
+            margin: 0 3rem;
+        }
+    }
+    .main__auth {
+        &-container {
+            flex-direction: column;
+            justify-content: space-around;
+            &-card {
+                padding: 2rem 1rem;
+                margin-bottom: 2rem;
+            }
+        }
+    }
+}
