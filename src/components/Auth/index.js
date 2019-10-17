@@ -10,7 +10,7 @@ export default class Auth extends Component {
         return (
             <div>
                 <Switch>
-                    <Route path="/auth" exact component={Login} />
+                    <Route path={match.url} exact component={Login} />
                     <Route path={`${match.url}/signup`} exact component={Register} />
                     <Route path={`${match.url}/signin`} exact component={Signin} />
                     

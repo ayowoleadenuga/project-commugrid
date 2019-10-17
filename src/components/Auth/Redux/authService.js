@@ -1,6 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { apiCall } from "../../../utils/api.utils";
-import { apiUrls } from "../../../utils/apiUrls";
+import { appService } from "../../../utils/app.service";
 
 
 const authLocalStorageKey = "id_token";
@@ -49,8 +48,7 @@ const loggedIn = () => {
 // };
 
 function login(requestBody) {
-  const method = "POST";
-  return apiCall(method, apiUrls.login, requestBody);
+  return appService.login(requestBody);
 }
 
 export const authService = {

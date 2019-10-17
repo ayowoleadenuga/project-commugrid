@@ -1,17 +1,22 @@
 import React from 'react';
-import { authService } from '../Auth/Redux/authService';
+import { connect } from "react-redux";
+import { authActions } from '../Auth/Redux/authActions';
 
-const MainApp = () => {
-    const logout = async () => {
-       await authService.logout();
-        return document.location.reload()
+const MainApp = ({ logout }) => {
+    const logoutHandler = async () => {
+       return await logout();
+        // return document.location.reload()
     }
     return (
         <div style={{margin: "25rem"}}>
             <h3>You are now logged in</h3>
-            <button onClick={logout}>Logout</button>
+            <button onClick={logoutHandler}>Logout</button>
         </div>
     );
 };
 
-export default MainApp;
+const mapDispatchToProps = dispatch => ({
+    logout: () => dispatch(authActions.logout())
+});
+
+export default connect(null, mapDispatchToProps)(MainApp);

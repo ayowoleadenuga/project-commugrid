@@ -10,23 +10,21 @@ import { PublicOnlyRoute } from './components/Router/PublicOnlyRoute';
 import { PrivateRoute } from './components/Router/PrivateRoute';
 import { authActions } from './components/Auth/Redux/authActions';
 import { history } from './utils/history';
-import { authService } from './components/Auth/Redux/authService';
 
 class App extends Component {
   
   render() {
-    const { submitted: loggedIn, logout } = this.props;
+    const { submitted } = this.props
     return (
       <Router history={history}>
         <Switch>
         <PrivateRoute
-            loggedIn={authService.loggedIn}
+            authed={submitted}
             path="/app"
-            logOut={logout}
             component={MainApp}
           />
           <PublicOnlyRoute
-            loggedIn={authService.loggedIn}
+            loggedIn={submitted}
             path="/auth"
             component={Auth}
           />
@@ -41,7 +39,7 @@ const mapStateToProps = state => {
   const { submitted} = state.auth;
 
   return {
-    submitted,
+    submitted
   };
 }
 

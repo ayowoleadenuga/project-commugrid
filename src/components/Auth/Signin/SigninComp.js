@@ -7,7 +7,7 @@ import { FaFacebook, FaGoogle,
     FaRegEnvelope, FaLock
 } from "react-icons/fa";
 import "./Signin.scss"
-import { appService } from '../../../utils/app.service'
+// import { appService } from '../../../utils/app.service'
 import { alertActions } from '../../../utils/Alert/actions/alert.actions';
 import { authActions } from '../Redux/authActions';
 import { authService } from '../Redux/authService';
@@ -76,28 +76,16 @@ class SigninComp extends Component {
             username: this.state.email,
             password: this.state.password
         }
-        await this.setState({ loading: true, error: "" })
-       await appService.login(data)
-        .then(resp => {
-            if(resp.token) {
-                this.setState({ loading: false, successful: true})
-                authService.setToken(resp.token);
-            }
-            this.props.history.push("/app");
-        })
-        .catch(e => {
-            console.log(e)
-            this.setState({ error: e, loading: false})
-        })
-    }
-    buttonVisibility = state => {
-        return (state.email && state.email !== "" &&
-        state.password && state.password !== "" && state.validate.passwordState && state.validate.emailState) ? false : true
-    }
+        await this.props.login(data)         
+        }
+        buttonVisibility = state => {
+            return (state.email && state.email !== "" &&
+            state.password && state.password !== "" && state.validate.passwordState && state.validate.emailState) ? false : true
+        }
     render() {
-        const { validate, loading, error } = this.state;
+        const { validate } = this.state;
         const buttonController = this.buttonVisibility(this.state)
-        console.log(this.state)
+        const { submitting, error } = this.props;
         return (
             <div className="signin">
                 <Row className="signin_row1">
@@ -114,9 +102,9 @@ class SigninComp extends Component {
                 <Row>
                      <Form className="form" onSubmit={this.onSubmit}>
                         {
-                            error !== "" ? (
+                            error !== null ? (
                                 <div className="form-row gh">
-                                    <Alert color="success">{error || "Something went wrong!, please try again."}</Alert>
+                                    <Alert color="success">{error.message || "Something went wrong!, please try again."}</Alert>
                                 </div>
                             ) : ""
                         }
@@ -142,7 +130,7 @@ class SigninComp extends Component {
                         <Row className="form-buttons">
                             <Button 
                             className="btn form-buttons_signup"
-                            disabled={buttonController}>{loading ? (<Spinner />) : "Login"}</Button>
+                            disabled={buttonController}>{submitting ? (<Spinner />) : "Login"}</Button>
                         </Row>
                         
                     </Form>
@@ -170,8 +158,9 @@ const mapStateToProps = state => {
   
   const mapDispatchToProps = dispatch => {
     return {
-      login: bindActionCreators(authActions.login, dispatch),
-      clearAlerts: bindActionCreators(alertActions.clear, dispatch)
+      login: (data)=>dispatch(authActions.login(data)),
+      clearAlerts: bindActionCreators(alertActions.clear, dispatch),
+      success: (resp)=>dispatch(authActions.success(resp))
     };
   };
   
