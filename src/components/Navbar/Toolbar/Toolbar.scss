@@ -3,7 +3,7 @@
     height: 56px;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     &_navigation-items {
         & ul {
             list-style: none;
@@ -19,7 +19,7 @@
             color: white;
         }
         & li {
-            padding: 0 1rem;
+            padding: 0 0.4rem;
             & button {
                 width: 5rem;
                 cursor: pointer;
@@ -49,13 +49,14 @@
         display: flex;
         align-items: center;
         height: 100%;
-        padding: 0 1rem;
+        // padding: 0 1rem;
+        margin: 0 11rem;
         .spacer {
             flex: 1
         }
     }
     &__logo {
-        margin-left: 1rem;
+        // margin-left: 1rem;
         & a {
             color: white;
             text-decoration: none;
@@ -78,12 +79,6 @@
     .toolbar {
         &__toggle-button  {
             display: none;
-        }
-        &__logo {
-            margin-left: 10rem;
-        }
-        &_navigation-items {
-            margin-right: 10rem
         }
     }
 }

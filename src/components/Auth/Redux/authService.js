@@ -47,17 +47,20 @@ const loggedIn = () => {
 //   return null;
 // };
 
-function login(requestBody) {
+const login = requestBody => {
   return appService.login(requestBody);
 }
+const forgotPassword = requestBody => {
+  return appService.forgotPassword(requestBody);
+}
+
 
 export const authService = {
   login,
   logout,
   loggedIn,
+  forgotPassword,
   getToken,
   setToken,
-//   getCustomerId,
-//   getUserDetails,
   tokenIsExpired
 };

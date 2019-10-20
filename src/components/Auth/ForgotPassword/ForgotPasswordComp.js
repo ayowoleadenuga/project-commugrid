@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import { Row, Form, FormGroup, Input, Button, Spinner, Alert } from 'reactstrap'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Link, withRouter } from 'react-router-dom'
-import { FaFacebook, FaGoogle, FaLock, FaUser
-} from "react-icons/fa";
-import "./Signin.scss"
+import { withRouter, Link } from 'react-router-dom'
+import { FaRegEnvelope } from "react-icons/fa";
+import "./ForgotPassword.scss"
 import { alertActions } from '../../../utils/Alert/actions/alert.actions';
-import { authActions, resetForm } from '../Redux/authActions';
+import { authActions } from '../Redux/authActions';
 import { authService } from '../Redux/authService';
 
-class SigninComp extends Component {
+class ForgotPasswordComp extends Component {
     constructor(props) {
         super(props);
           this.state = {
@@ -48,10 +47,12 @@ class SigninComp extends Component {
         }
     
       handleChange = async (event) => {
-          this.props.clearError()
         const { target } = event;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const { name } = target;
+        if (name === "email") {
+            this.validateEmail(value)
+        }
         if (name === "password") {
             this.validatePassword(value);
         }
@@ -68,76 +69,74 @@ class SigninComp extends Component {
       onSubmit = async (e) => {
           e.preventDefault();
         const data = {
-            username: this.state.email,
-            password: this.state.password
+            username: this.state.email
         }
         await this.props.login(data)         
         }
         buttonVisibility = state => {
             return (state.email && state.email !== "" &&
-            state.password && state.password !== "" && state.validate.passwordState) ? false : true
+            state.password && state.password !== "" && state.validate.passwordState && state.validate.emailState) ? false : true
         }
     render() {
-        const { validate } = this.state;
+        const { validate, successful } = this.state;
         const buttonController = this.buttonVisibility(this.state)
         const { submitting, error } = this.props;
         return (
-            <div className="signin">
-                <Row className="signin_row1">
-                    <div className="signin_row1-register">
-                        <p>Not yet registered? <Link to="/auth">Register</Link></p>
-                    </div>
-                    <div className="spacer" />
-                    <div className="signin_social-icons">
-                        <div className="p">Signup with</div>
-                        <div className="signin-icons"><FaFacebook /><FaGoogle /></div>
-                    </div>
+          <React.Fragment>
+            { successful ?
+            <div className="forgot-password">
+                <Row>
+                  <div className="message-block">
+                    <p>
+                    Please provide the email address you used when you registered your CommuGrid's account.
+                    </p>
+                    <p>
+                      We will send you an email that includes a link to reset your password.
+                    </p>
+                  </div>
+                  
                 </Row>
                 <br/>
                 <Row>
                      <Form className="form" onSubmit={this.onSubmit}>
                         {
-                            error !== null && error.length ? (
+                            error !== null ? (
                                 <div className="form-row gh">
-                                    <Alert color="success">{error || "Something went wrong!, please try again."}</Alert>
+                                    <Alert color="success">{error.message || "Something went wrong!, please try again."}</Alert>
                                 </div>
                             ) : ""
                         }
                         
                         <Row className="form-row">
                             <FormGroup>
-                                <FaUser />
-                                <Input type="text" placeholder="Email/Phone number"  name="email" 
+                                <FaRegEnvelope />
+                                <Input type="email" placeholder="Enter Email Address"  name="email" 
                                 onChange={this.handleChange}
                                 />
-                                  {/* {!validate.emailState && validate.emailState !== null && this.state.email && this.state.email.length > 1 ? (<p style={{color: "red"}}>Invalid</p>) : "" } */}
-                            </FormGroup>
-                        </Row>
-
-                        <Row className="form-row">
-                            <FormGroup>
-                                <FaLock />
-                                <Input type="password" placeholder="Enter Password" name="password" onChange={this.handleChange}/>
-                                {!validate.passwordState && validate.passwordState !== null && this.state.password && this.state.password.length > 1 ? (<p style={{color: "red"}}>Min of 6</p>) : "" }
+                                  {!validate.emailState && validate.emailState !== null && this.state.email && this.state.email.length > 1 ? (<p style={{color: "red"}}>Invalid</p>) : "" }
                             </FormGroup>
                         </Row>
                         
                         <Row className="form-buttons">
                             <Button 
                             className="btn form-buttons_signup"
-                            disabled={buttonController}>{submitting ? (<Spinner />) : "Login"}</Button>
+                            disabled={buttonController}>{submitting ? (<Spinner />) : "Send Email"}</Button>
                         </Row>
                         
                     </Form>
-                    <Row>
-                        <p className="forgot-P">Forgot Password? <Link to="/auth/forgot-password">Click here</Link></p>
-                    </Row>
-                    <br />
-                    <Row>
-                        <p className="forgot-P">Click here to login as a Merchant</p>
-                    </Row>
                 </Row>
             </div>
+         : 
+          <Row className="successful">
+              <p>If your email is associated with CommuGrid, you will recieve an email that includes a link to reset your password</p>
+              <p>Click the link to reset your password</p>
+              <div className="successful_button">
+                <Button><Link to="/auth/signin">LOGIN</Link></Button>
+              </div>
+          </Row>
+      }
+          </React.Fragment>
+          
         )
     }
 }
@@ -162,12 +161,11 @@ const mapStateToProps = state => {
     return {
       login: (data)=>dispatch(authActions.login(data)),
       clearAlerts: bindActionCreators(alertActions.clear, dispatch),
-      success: (resp)=>dispatch(authActions.success(resp)),
-      clearError: ()=>dispatch(resetForm()),
+      success: (resp)=>dispatch(authActions.success(resp))
     };
   };
   
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(SigninComp));
+)(withRouter(ForgotPasswordComp));

@@ -24,7 +24,11 @@ class MainAuth extends Component {
                 document.getElementById("roundedTwo").disabled = true;
             }
             this.props.changeCheckedValue(e.target.value);
-            this.props.changeDisableStatus();
+
+            if(this.props.authState.disable) {
+              this.props.changeDisableStatus();  
+            }
+            
         } else {
             const id = e.target.id;
             if(id === "roundedOne") {
@@ -38,7 +42,10 @@ class MainAuth extends Component {
                 document.getElementById("roundedTwo").disabled = false;
             }
             this.props.changeCheckedValue("");
-            this.props.changeDisableStatus();
+            this.props.changeDisableStatus(); 
+            if(this.props.authState.disable) {
+                this.props.changeDisableStatus();  
+              }
         }
     } 
     handlePageChange = () => {
@@ -69,7 +76,7 @@ class MainAuth extends Component {
                         </div>
                     </div>
                     <div className="main__auth-container-card">
-                        <p className="head">Administrator</p>
+                        <p className="head">Energy Provider</p>
                         <p className="body">I am searching for clean renewable energy for my personal use.</p>
                         <div className="roundedOne">
                             <input type="checkbox" value="admin" id="roundedThree" name="admin" onChange={this.handleCheck} />

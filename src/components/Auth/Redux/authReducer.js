@@ -1,4 +1,4 @@
-import { CHANGE_CHECKED_VALUE, CHANGE_DISABLE_STATUS, authConstants } from "./authActions";
+import { CHANGE_CHECKED_VALUE, CHANGE_DISABLE_STATUS, authConstants, RESET_FORM } from "./authActions";
 
 const initialState = {
     checkedValue: '',
@@ -7,6 +7,7 @@ const initialState = {
     submitted: false,
     response: null,
     request: null,
+    forgotPasswordStatus: null,
     error: null
 }
 
@@ -33,6 +34,11 @@ export default function( state = initialState, action ) {
                 response: action.response,
                 error: null
             };
+        case RESET_FORM:
+            return {
+                ...state,
+                error: null
+            };
         case authConstants.LOGIN_FAILURE:
             return {
                 ...state,
@@ -40,6 +46,11 @@ export default function( state = initialState, action ) {
                 submitted: false,
                 response: null,
                 error: action.error
+            };
+        case authConstants.FORGOT_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                forgotPasswordStatus: true
             };
         case authConstants.LOGIN_RESET:
             return {

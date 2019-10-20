@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Row, Form, FormGroup, Input, Button, Label, Spinner, Alert } from 'reactstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { country_data } from '../../../utils/countries_states_lgas';
 import { FaFacebook, FaGoogle, FaUser, FaPhone,
-    FaRegEnvelope, FaGlobe, FaMapMarkerAlt, FaLock
+    FaRegEnvelope, FaGlobe, FaMapMarkerAlt, FaLock, FaBriefcase, FaUniversity, FaLink, FaRestroom, FaNewspaper
 } from "react-icons/fa";
+import {store} from "../../../store"
 import "./Signup.scss"
 import { appService } from '../../../utils/app.service'
 
@@ -94,7 +95,8 @@ class Signup extends Component {
       }
       onSubmit = async (e) => {
           e.preventDefault();
-        const data = {
+          const userType = store.getState().auth.checkedValue;
+        let data = {
             email: this.state.email,
             phoneNumber: this.formatPhoneNumber(this.state.phoneNumber),
             firstName: this.state.firstName,
@@ -104,12 +106,32 @@ class Signup extends Component {
             state: this.state.state,
             password: this.state.password
         }
+        if(userType !== "energy_user") {
+            data.postalCode = this.state.postalCode;
+            data.companySize = this.state.companySize;
+            data.companyName = this.state.companyName;
+            data.website = this.state.website;
+            data.cacNumber = this.state.cacNumber;
+            data.expertiseAreas = [ 2 ];
+            data.coverageAreas = [ 2 ];
+        }
+        let user;
+        if(userType !== "energy_user") {
+            user = "merchant"
+        } else {
+            user = "consumer"
+        }
         await this.setState({ loading: true, error: "" })
-       await appService.signup(data)
+       await appService.signup(data, user)
         .then(resp => {
+            console.log(resp)
             if(resp.id) {
-                this.setState({ loading: false, successful: true})
+                this.setState({ successful: true})
             }
+            if(resp.errors[0]) {
+                this.setState({ error: resp.errors[0]})
+            }
+            this.setState({loading: false})
         })
         .catch(e => {
             console.log(e)
@@ -131,6 +153,8 @@ class Signup extends Component {
     render() {
         const { countries_data, validate, loading, error, successful } = this.state;
         const buttonController = this.buttonVisibility(this.state)
+        const userType = store.getState().auth.checkedValue;
+        console.log(error)
         return (
             <div className="signup">
                 <Row className="signup_row1">
@@ -141,13 +165,20 @@ class Signup extends Component {
                 </Row>
                 <br/>
                 <Row>
-                     { !successful ?
+                     { successful ?
                     
                    (<Form className="form" onSubmit={this.onSubmit}>
                         {
-                            error !== "" ? (
+                            error !== "" && error.msg && error.param ? (
                                 <div className="form-row gh">
-                                    <Alert color="success">{error}</Alert>
+                                    <Alert color="success">{`${error.msg}${" at the '"}${error.param}${"' field"}`}</Alert>
+                                </div>
+                            ) : ""
+                        }
+                        {
+                            error !== "" && error.error ? (
+                                <div className="form-row gh">
+                                    <Alert color="success">{error.error}</Alert>
                                 </div>
                             ) : ""
                         }
@@ -161,6 +192,48 @@ class Signup extends Component {
                                 <Input type="text" placeholder="Lastname"  name="lastName" onChange={this.handleChange}/>
                             </FormGroup>   
                         </Row>
+                        {
+                            userType !== "energy_user" ? 
+                            (
+                                <React.Fragment>
+                                    <Row className="form-row">
+                                        <FormGroup>
+                                            <FaUniversity />
+                                            <Input type="text" placeholder="Company Name"  name="companyName" onChange={this.handleChange}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <FaLink />
+                                            <Input type="text" placeholder="Website"  name="website" onChange={this.handleChange}/>
+                                        </FormGroup>   
+                                    </Row>
+                                    <Row className="form-row">
+                                        <FormGroup>
+                                            <FaBriefcase />
+                                            <Input type="text" placeholder="Position"  name="position" onChange={this.handleChange}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <FaRestroom />
+                                            <Input type="select" name="companySize" onChange={this.handleChange}>
+                                                <option>Select Company Size</option>
+                                                <option>1-100</option>
+                                                <option>101-300</option>
+                                                <option>301-700</option>
+                                            </Input>
+                                        </FormGroup>   
+                                    </Row>
+                                    <Row className="form-row">
+                                        <FormGroup>
+                                            <FaNewspaper />
+                                            <Input type="tell" placeholder="CAC Number"  name="cacNumber" onChange={this.handleChange}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <FaNewspaper />
+                                            <Input type="tell" placeholder="Postal Code"  name="postalCode" onChange={this.handleChange}/>
+                                        </FormGroup>   
+                                    </Row>
+                                </React.Fragment>
+                            ) : ""
+                        }
                         <Row className="form-row">
                             <FormGroup>
                                 <FaMapMarkerAlt />
@@ -245,7 +318,7 @@ class Signup extends Component {
                             </FormGroup>
                         </Row>
                         <Row className="form-buttons">
-                            <Button className="btn form-buttons_back" onClick={() => this.props.history.push("/")}>Back</Button>
+                            <Button className="btn form-buttons_back" onClick={() => this.props.history.push("/auth")}>Back</Button>
                             <Button 
                             className="btn form-buttons_signup"
                             disabled={buttonController}>{loading ? (<Spinner />) : "Signup"}</Button>
@@ -257,9 +330,9 @@ class Signup extends Component {
                         <Row className="successful">
                             <h5>Registration Successful</h5>
                             <p>A mail has been sent to your email for verification, however, we don't want to keep you waiting
-                                and so you can choose to proceed to login although with limited access to certain featurs until after verification.</p>
+                                and so you can choose to proceed to login although with limited access to certain features until after verification.</p>
                             <div>
-                             <Button>PROCEED TO LOGIN</Button>
+                             <Button><Link to="/auth/signin">PROCEED TO LOGIN</Link></Button>
                             </div>
                             
                         </Row>

@@ -5,7 +5,6 @@ import { authActions } from '../Auth/Redux/authActions';
 const MainApp = ({ logout }) => {
     const logoutHandler = async () => {
        return await logout();
-        // return document.location.reload()
     }
     return (
         <div style={{margin: "25rem"}}>

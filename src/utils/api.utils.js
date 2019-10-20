@@ -20,6 +20,8 @@ const createUrlParams = params => {
       return response.json();
     } else if (response.ok && response.status === 201) {
       return response.text();
+    } else if (response.status === 400) {
+      return response.json()
     }
   
     return response.json().then(json => {
