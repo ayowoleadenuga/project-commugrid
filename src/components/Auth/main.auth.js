@@ -8,7 +8,9 @@ import { changeCheckedValue, changeDisableStatus } from './Redux/authActions';
 class MainAuth extends Component {
     componentDidMount() {
         this.props.changeCheckedValue("");
-        this.props.changeDisableStatus();
+        if(!this.props.authState.disable) {
+            this.props.changeDisableStatus();  
+          }
     }
     handleCheck = e => {
         if (e.target.checked) {

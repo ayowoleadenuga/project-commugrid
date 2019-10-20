@@ -165,7 +165,7 @@ class Signup extends Component {
                 </Row>
                 <br/>
                 <Row>
-                     { successful ?
+                     { !successful ?
                     
                    (<Form className="form" onSubmit={this.onSubmit}>
                         {

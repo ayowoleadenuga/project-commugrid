@@ -83,20 +83,20 @@ class ForgotPasswordComp extends Component {
         const { submitting, error } = this.props;
         return (
           <React.Fragment>
-            { successful ?
+            { !successful ?
             <div className="forgot-password">
                 <Row>
                   <div className="message-block">
                     <p>
-                    Please provide the email address you used when you registered your CommuGrid's account.
+                    Please provide the email address or phone number you used when you registered your CommuGrid's account.
                     </p>
                     <p>
-                      We will send you an email that includes a link to reset your password.
+                      We will send you a link to reset your password.
                     </p>
                   </div>
                   
                 </Row>
-                <br/>
+                {/* <br/> */}
                 <Row>
                      <Form className="form" onSubmit={this.onSubmit}>
                         {
@@ -110,7 +110,7 @@ class ForgotPasswordComp extends Component {
                         <Row className="form-row">
                             <FormGroup>
                                 <FaRegEnvelope />
-                                <Input type="email" placeholder="Enter Email Address"  name="email" 
+                                <Input type="email" placeholder="Enter Email Address or Phone number"  name="email" 
                                 onChange={this.handleChange}
                                 />
                                   {!validate.emailState && validate.emailState !== null && this.state.email && this.state.email.length > 1 ? (<p style={{color: "red"}}>Invalid</p>) : "" }
@@ -120,7 +120,7 @@ class ForgotPasswordComp extends Component {
                         <Row className="form-buttons">
                             <Button 
                             className="btn form-buttons_signup"
-                            disabled={buttonController}>{submitting ? (<Spinner />) : "Send Email"}</Button>
+                            disabled={buttonController}>{submitting ? (<Spinner />) : "Send OTP"}</Button>
                         </Row>
                         
                     </Form>
