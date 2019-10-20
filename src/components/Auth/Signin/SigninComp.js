@@ -133,9 +133,9 @@ class SigninComp extends Component {
                         <p className="forgot-P">Forgot Password? <Link to="/auth/forgot-password">Click here</Link></p>
                     </Row>
                     <br />
-                    <Row>
+                    {/* <Row>
                         <p className="forgot-P">Click here to login as a Merchant</p>
-                    </Row>
+                    </Row> */}
                 </Row>
             </div>
         )

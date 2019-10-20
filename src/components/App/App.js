@@ -7,7 +7,7 @@ const MainApp = ({ logout }) => {
        return await logout();
     }
     return (
-        <div style={{margin: "25rem"}}>
+        <div style={{padding: "20%"}}>
             <h3>You are now logged in</h3>
             <button onClick={logoutHandler}>Logout</button>
         </div>
